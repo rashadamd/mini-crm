@@ -3,20 +3,17 @@ import { useParams, useNavigate } from 'react-router-dom';
 import { useGetClientQuery, useUpdateClientMutation } from '../services/clientsApi';
 
 const ClientDetails = () => {
-  const { id } = useParams(); // Get ID from URL
+  const { id } = useParams();
   const navigate = useNavigate();
 
-  // 1. Fetch the specific client
   const { data: client, isLoading } = useGetClientQuery(id || '');
   
-  // 2. Setup Update Mutation
   const [updateClient] = useUpdateClientMutation();
 
-  // Local state for editing
   const [isEditing, setIsEditing] = useState(false);
   const [formData, setFormData] = useState({ name: '', email: '', company: '' });
 
-  // When data loads, put it into the form state
+  // set to form(used to create table)
   useEffect(() => {
     if (client) {
       setFormData({ name: client.name, email: client.email, company: client.company });
@@ -26,9 +23,9 @@ const ClientDetails = () => {
   const handleUpdate = async (e: React.FormEvent) => {
     e.preventDefault();
     if (id) {
-      // Call API to update
+
       await updateClient({ id, ...formData });
-      setIsEditing(false); // Stop editing mode
+      setIsEditing(false);
     }
   };
 
@@ -40,7 +37,7 @@ const ClientDetails = () => {
       <button onClick={() => navigate('/')}>&larr; Back to List</button>
       
       {!isEditing ? (
-        // VIEW MODE
+        //display
         <div style={{ marginTop: '20px', border: '1px solid #ddd', padding: '20px' }}>
           <h2>{client.name}</h2>
           <p><strong>Email:</strong> {client.email}</p>
@@ -48,7 +45,8 @@ const ClientDetails = () => {
           <button onClick={() => setIsEditing(true)}>Edit Client</button>
         </div>
       ) : (
-        // EDIT MODE
+
+        //editing details
         <form onSubmit={handleUpdate} style={{ marginTop: '20px', border: '1px solid #ddd', padding: '20px' }}>
           <h2>Edit Client</h2>
           <div style={{ marginBottom: '10px' }}>

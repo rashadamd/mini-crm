@@ -1,6 +1,5 @@
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
 
-// Client structure
 export interface Client {
   id: string;
   name: string;
@@ -8,7 +7,7 @@ export interface Client {
   company: string;
 }
 
-// API Service
+//mockAPI setup  
 export const clientsApi = createApi({
   reducerPath: 'clientsApi',
   baseQuery: fetchBaseQuery({ 
@@ -21,29 +20,29 @@ export const clientsApi = createApi({
   tagTypes: ['Client'], 
   endpoints: (builder) => ({
     
-    //Fetch all clients
+    //fetch all clients
     getClients: builder.query<Client[], void>({
       query: () => 'clients',
-      providesTags: ['Client'], // If 'Client' tag is invalidated, re-fetch this
+      providesTags: ['Client'],
     }),
 
-    // Fetch ONE client by ID
+    //fetch specific client
     getClient: builder.query<Client, string>({
       query: (id) => `clients/${id}`,
       providesTags: ['Client'],
     }),
 
-    // Add a new client
+    //add client
     addClient: builder.mutation<Client, Partial<Client>>({
       query: (body) => ({
         url: 'clients',
         method: 'POST',
         body,
       }),
-      invalidatesTags: ['Client'], // This forces the list to refresh after adding!
+      invalidatesTags: ['Client'], //check & refresh list
     }),
 
-    // Update a client
+    //update client
     updateClient: builder.mutation<Client, Partial<Client> & { id: string }>({
       query: ({ id, ...patch }) => ({
         url: `clients/${id}`,
@@ -53,7 +52,7 @@ export const clientsApi = createApi({
       invalidatesTags: ['Client'],
     }),
 
-    // Remove a client
+    //delete client
     deleteClient: builder.mutation<{ success: boolean; id: string }, string>({
       query: (id) => ({
         url: `clients/${id}`,

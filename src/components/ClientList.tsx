@@ -4,35 +4,34 @@ import { useGetClientsQuery, useAddClientMutation, useDeleteClientMutation } fro
 import type { Client } from '../services/clientsApi';
 
 const ClientList = () => {
-  // 1. Fetch Data Hook
+  //fetch data
   const { data: clients, error, isLoading } = useGetClientsQuery();
   
-  // 2. Mutation Hooks (for Adding and Deleting)
+  //for adding and deleting
   const [addClient] = useAddClientMutation();
   const [deleteClient] = useDeleteClientMutation();
 
-  // Local state for the "Modal" visibility and form data
+  //modal visibility
   const [isModalOpen, setModalOpen] = useState(false);
   const [newClient, setNewClient] = useState({ name: '', email: '', company: '' });
 
-  // Handle Create
+  //add client
   const handleAddClient = async (e: React.FormEvent) => {
     e.preventDefault();
-    // Call the API
     await addClient(newClient); 
-    // Reset form and close modal
+
     setNewClient({ name: '', email: '', company: '' });
     setModalOpen(false);
   };
 
-  // Handle Delete
+  //delete client
   const handleDelete = async (id: string) => {
     if(confirm("Are you sure?")) {
       await deleteClient(id);
     }
   }
 
-  // --- RENDERING ---
+  // fetch client details and render
 
   if (isLoading) return <div>Loading clients...</div>;
   if (error) return <div>Error loading data!</div>;
@@ -46,7 +45,6 @@ const ClientList = () => {
         </button>
       </div>
 
-      {/* table list */}
       <table border={1} cellPadding={10} style={{ width: '100%', borderCollapse: 'collapse' }}>
         <thead>
           <tr>
