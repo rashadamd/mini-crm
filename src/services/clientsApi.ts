@@ -12,7 +12,7 @@ export const clientsApi = createApi({
   reducerPath: 'clientsApi',
   baseQuery: fetchBaseQuery({ 
 
-    baseUrl: 'https://692683fa26e7e41498fa8958.mockapi.io/api/v1/' 
+    baseUrl: 'https://692683fa26e7e41498fa8958.mockapi.io/api/v1/' //endpoint URL(from mockAPI)
 
   }),
   
